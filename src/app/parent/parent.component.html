@@ -1,0 +1,35 @@
+<div class="container">
+	<label> <input (change)="layoutChange($event)" type="radio" name="layout" value="row">Grid</label>
+	<label> <input (change)="layoutChange($event)" checked type="radio" name="layout" value="column">Column</label>
+
+	<form [formGroup]="addContentForm" (ngSubmit)="onSubmit()">
+		<div fxLayout="row wrap" fxLayoutGap="30px grid" fxLayoutAlign="start">
+			<div fxFlex="25%" fxFlex.lg="25%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="100%">
+				<input type="text"  [ngClass]="{ 'is-invalid': submitted && f['name'].errors }" placeholder="Enter name" class="form-control" formControlName="name" required>
+		<p class="error" *ngIf="submitted && f['name'].errors">Name is required</p>
+			 </div>
+			 <div fxFlex="25%" fxFlex.lg="25%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="100%">
+			 
+		<input type="number" [ngClass]="{ 'is-invalid': submitted && f['money'].errors }"  placeholder="Enter money" class="form-control" formControlName="money" required>
+		<p class="error"  *ngIf="submitted && f['money'].errors">Money is required</p>
+		</div>
+		<div fxFlex="25%" fxFlex.lg="25%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="100%">
+		<input type="submit" class="button">
+	</div>
+		</div>
+	</form>
+
+	<div [fxLayout]="layout">
+		<div class="card" *ngFor="let data of commonData;index as index" fxLayoutAlign="start center" fxFlex="48%" fxFlex.lg="48%" fxFlex.md="48%">
+			<app-child fxFlex="100%" [layout]="layout" fxFlex.md="100%" fxFlex.sm="100%" fxLayoutAlign="start center"
+				fxFlex.xs="100%" [name]="data.name" [money]="data.money" [index]="index" #childComponent
+				(currentIndex)="addMoneyChild($event)"></app-child>
+			<div fxFlex="30%">
+				<button type="button" class="button" (click)="addMoney(index)">Send Money to
+					{{data.name}}</button>
+				<button class="button" (click)="subtractMoney(index)">Get Money from
+					{{data.name}}</button>
+			</div>
+		</div>
+	</div>
+</div>
